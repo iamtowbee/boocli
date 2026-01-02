@@ -27,6 +27,14 @@ A spooky clipboard manager for macOS and iOS with cloud sync! Never lose your cl
 - **📋 Manual Entry** - Add items manually or from current clipboard
 - **🏷️ Smart Categories** - Filter by text, URLs, code, or images
 
+### CLI Tool (macOS)
+- **⌨️ Interactive Terminal UI** - Browse clipboard history in your terminal
+- **🚀 Lightning Fast** - Pure Swift, no dependencies
+- **🔄 Data Sharing** - Uses same data as macOS GUI app
+- **🎨 Ghost-Themed TUI** - Beautiful colors and box drawing
+- **⚡ Quick Commands** - `--list`, `--last` for scripting
+- **🔍 Search & Filter** - Full-text search and favorites filtering
+
 ## 📦 What's Included
 
 ```
@@ -40,11 +48,16 @@ GhostClipboard/
 │   ├── ContentView.swift
 │   ├── Info.plist
 │   └── GhostClipboard.entitlements
-└── iOS/                       # iOS app
-    ├── GhostClipboardApp.swift
-    ├── ContentView.swift
-    ├── Info.plist
-    └── GhostClipboard.entitlements
+├── iOS/                       # iOS app
+│   ├── GhostClipboardApp.swift
+│   ├── ContentView.swift
+│   ├── Info.plist
+│   └── GhostClipboard.entitlements
+└── CLI/                       # Terminal interface
+    ├── main.swift             # Interactive TUI
+    ├── ghostclip              # Runner script
+    ├── install.sh             # Installation script
+    └── README.md              # CLI documentation
 ```
 
 ## 🛠️ Building the Apps
@@ -123,6 +136,23 @@ Since we're using SwiftUI, you'll need to create Xcode projects for both platfor
 3. Sign in with your Apple ID in Settings → iCloud
 ```
 
+#### CLI Tool:
+```bash
+# Navigate to CLI directory
+cd GhostClipboard/CLI
+
+# Install globally
+./install.sh
+
+# Or run directly
+./ghostclip
+
+# For more options
+ghostclip --help
+```
+
+See [CLI/README.md](CLI/README.md) for full documentation.
+
 ### Quick Setup Script (Alternative)
 
 If you prefer using Swift Package Manager for the shared code:
@@ -186,6 +216,33 @@ let package = Package(
 - **History** - View all clipboard items
 - **Favorites** - Quick access to starred items
 - **Ghost Mode** - Have fun with random ghosts!
+
+### CLI Tool
+
+**Interactive Mode:**
+```bash
+ghostclip
+```
+- Navigate with arrow keys (↑/↓)
+- Press `Enter` to copy selected item
+- Press `/` to search
+- Press `f` to toggle favorite
+- Press `*` to show favorites only
+- Press `q` to quit
+
+**Quick Commands:**
+```bash
+ghostclip --list    # List all items
+ghostclip --last    # Copy last item
+ghostclip --help    # Show help
+```
+
+**Shell Integration:**
+```bash
+# Add alias for quick access
+alias gc='ghostclip'
+alias gcl='ghostclip --last'
+```
 
 ## ☁️ Cloud Sync
 

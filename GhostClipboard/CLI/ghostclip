@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# GhostClipboard CLI Runner
+# Runs the Swift CLI tool
+#
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# Check if compiled binary exists
+if [ ! -f "$DIR/ghostclip-bin" ]; then
+    echo "👻 Compiling GhostClipboard CLI..."
+    swiftc -O "$DIR/main.swift" -o "$DIR/ghostclip-bin"
+
+    if [ $? -ne 0 ]; then
+        echo "❌ Compilation failed!"
+        exit 1
+    fi
+
+    echo "✅ Compilation successful!"
+fi
+
+# Run the binary
+"$DIR/ghostclip-bin" "$@"
