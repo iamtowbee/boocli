@@ -2,6 +2,17 @@
 
 A spooky interactive ghost companion for your terminal!
 
+## 📦 What's in This Repo?
+
+This repository contains **two** ghost-themed apps:
+
+1. **BOOCLI** (Terminal App) - Spooky ghost companion for your command line
+2. **GhostClipboard** (macOS & iOS Apps) - Clipboard manager with cloud sync
+
+Navigate to each folder for specific documentation:
+- Terminal app: This README (root directory)
+- Clipboard apps: [`GhostClipboard/README.md`](./GhostClipboard/README.md)
+
 ## What is this?
 
 Ever felt lonely while coding late at night? Fear not! BOOCLI brings you ghostly companions, spooky fortunes, and tales of tech horror to keep you company in the terminal.
@@ -154,6 +165,19 @@ Side effects may include:
 ## License
 
 MIT - Free to haunt as you please!
+
+## 📱 Want More Ghosts?
+
+Check out **GhostClipboard** - our macOS and iOS clipboard manager apps with cloud sync!
+
+👉 **[See GhostClipboard documentation](./GhostClipboard/README.md)**
+
+Features:
+- Automatic clipboard monitoring (macOS)
+- Cloud sync across devices
+- Ghost-themed UI
+- Smart categorization
+- And more spooky features!
 
 ## Contributing
 
