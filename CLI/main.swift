@@ -417,6 +417,11 @@ if CommandLine.arguments.contains("--help") || CommandLine.arguments.contains("-
       ghostclip --list       List all items
       ghostclip --last       Copy last item
 
+    Fun Extras:
+      ghostclip --fortune    Get a spooky fortune
+      ghostclip --haunt      Get haunted by a ghost
+      ghostclip --story      Hear a ghost story
+
     Interactive Mode Commands:
       ↑/↓         Navigate items
       ENTER       Copy selected item to clipboard
@@ -452,6 +457,83 @@ if CommandLine.arguments.contains("--last") {
     } else {
         print(colored("❌ No clipboard history found!", .red))
     }
+    exit(0)
+}
+
+// Fun extras!
+if CommandLine.arguments.contains("--fortune") {
+    let fortunes = [
+        "A mysterious presence watches over your code tonight... 👁️",
+        "Beware of bugs that lurk in the shadows of your semicolons...",
+        "Your next commit will haunt the repository forever... choose wisely.",
+        "Three merge conflicts shall appear before the moon is full.",
+        "The spirit of a forgotten TODO comment calls out to you...",
+        "Your code will compile on the first try... said no ghost ever.",
+        "A phantom variable hovers nearby, undefined and restless.",
+        "The ancient curse of 'works on my machine' shall be lifted... eventually.",
+        "Beware: a wild null pointer approaches at midnight.",
+        "The ghost of technical debt past shall visit you soon."
+    ]
+    print(colored("\n🔮 The Ghost King peers into your future... 🔮\n", .purple, bold: true))
+    usleep(500_000)
+    print(colored(fortunes.randomElement()!, .yellow, bold: true))
+    print("")
+    exit(0)
+}
+
+if CommandLine.arguments.contains("--haunt") {
+    let messages = [
+        "BOO! Did I scare you? 👻",
+        "Debugging at this hour? How... spooky! 🕯️",
+        "I see dead code... it's everywhere! 💀",
+        "Your console.logs can't save you now! 🔮",
+        "Commit your changes... before they disappear! ⚰️",
+        "I've been watching your git history... interesting choices. 📜",
+        "The spirits sense... a memory leak! 🌙",
+        "Wooooooo! Stack overflow! Wooooooo! 👁️"
+    ]
+    print(colored("\n       .--.", .cyan))
+    print(colored("      |o_o |", .cyan))
+    print(colored("      |:_/ |", .cyan))
+    print(colored("     //   \\ \\", .cyan))
+    print(colored("    (|     | )", .cyan))
+    print(colored("   /'\\   _/`\\", .cyan))
+    print(colored("   \\___)=(___/\n", .cyan))
+    usleep(500_000)
+    print(colored(messages.randomElement()!, .white, bold: true))
+    print("")
+    exit(0)
+}
+
+if CommandLine.arguments.contains("--story") {
+    let stories = [
+        (title: "The Infinite Loop", story: """
+        Long ago, a developer wrote a while loop without a break condition.
+        They say on quiet nights, you can still hear the CPU fan spinning...
+        The program runs to this day, in a server room no one dares to enter.
+        Some say the developer is still there, waiting for the loop to end...
+
+        But it never does. It. Never. Does. 👻
+        """),
+        (title: "The Missing Semicolon", story: """
+        In the depths of a legacy codebase, there lived a bug.
+        Not just any bug - a bug that appeared only in production.
+        Developers searched for years, but found nothing in their tests.
+        One night, a junior dev stayed late, and finally saw it...
+
+        A single missing semicolon, hiding in plain sight.
+        But when they went to fix it... the line had vanished.
+        To this day, the bug still haunts production. 🌙
+        """)
+    ]
+    let story = stories.randomElement()!
+    print(colored("\n📖 " + story.title + " 📖\n", .red, bold: true))
+    usleep(500_000)
+    for line in story.story.split(separator: "\n") {
+        print(colored(String(line), .white))
+        usleep(300_000)
+    }
+    print("")
     exit(0)
 }
 
