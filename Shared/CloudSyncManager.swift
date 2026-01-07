@@ -9,6 +9,7 @@ import Foundation
 import CloudKit
 import Combine
 
+@MainActor
 class CloudSyncManager: ObservableObject {
     @Published var isSyncing: Bool = false
     @Published var lastSyncDate: Date?
@@ -61,16 +62,12 @@ class CloudSyncManager: ObservableObject {
 
     // Sync: upload local items and download cloud items
     func sync(localItems: [ClipboardItem]) async throws -> [ClipboardItem] {
-        DispatchQueue.main.async {
-            self.isSyncing = true
-            self.syncError = nil
-        }
+        isSyncing = true
+        syncError = nil
 
         defer {
-            DispatchQueue.main.async {
-                self.isSyncing = false
-                self.lastSyncDate = Date()
-            }
+            isSyncing = false
+            lastSyncDate = Date()
         }
 
         // Fetch cloud items
