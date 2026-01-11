@@ -137,6 +137,26 @@ class GhostClipboardCLI {
         items.remove(at: index)
         saveItems()
     }
+
+    func exportToFile(path: String) -> Bool {
+        guard let encoded = try? JSONEncoder().encode(items) else { return false }
+        do {
+            try encoded.write(to: URL(fileURLWithPath: path))
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    func importFromFile(path: String) -> Bool {
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)),
+              let decoded = try? JSONDecoder().decode([ClipboardItem].self, from: data) else {
+            return false
+        }
+        items = decoded
+        saveItems()
+        return true
+    }
 }
 
 // MARK: - UI Rendering
@@ -240,11 +260,13 @@ func renderUI(cli: GhostClipboardCLI) {
     print(colored(String(repeating: "─", count: width), .purple))
     print(colored("Commands:", .purple, bold: true))
     print("  ↑/↓ Navigate  | " + colored("ENTER", .green) + " Copy  | " +
-          colored("F", .yellow) + " Toggle Favorite  | " +
+          colored("P", .cyan) + " Preview  | " +
+          colored("F", .yellow) + " Favorite  | " +
           colored("D", .red) + " Delete")
     print("  " + colored("/", .cyan) + " Search  | " +
-          colored("*", .yellow) + " Favorites Only  | " +
-          colored("R", .blue) + " Refresh  | " +
+          colored("*", .yellow) + " Favorites  | " +
+          colored("E", .blue) + " Export  | " +
+          colored("I", .blue) + " Import  | " +
           colored("Q", .red) + " Quit")
     print(colored(String(repeating: "─", count: width), .purple))
 }
@@ -397,6 +419,57 @@ func runInteractiveMode() {
             cli.loadItems()
             cli.selectedIndex = 0
 
+        case "P": // Preview full item
+            if !cli.filteredItems.isEmpty && cli.selectedIndex < cli.filteredItems.count {
+                let item = cli.filteredItems[cli.selectedIndex]
+                UI.clearScreen()
+                print(colored("\n👻 Full Preview", .purple, bold: true))
+                print(colored(String(repeating: "─", count: 50), .purple))
+                print(colored("\nType: \(item.type) | Created: \(item.timeAgo)", .dim))
+                if item.isFavorite {
+                    print(colored("⭐ Favorite", .yellow))
+                }
+                print("")
+                print(item.content)
+                print(colored("\n" + String(repeating: "─", count: 50), .purple))
+                print(colored("\nPress any key to return...", .dim))
+                _ = readKey()
+            }
+
+        case "E": // Export
+            UI.clearScreen()
+            print(colored("\n💾 Export Clipboard History", .purple, bold: true))
+            print("\nEnter file path (e.g., ~/clipboard-export.json):")
+            UI.showCursor()
+            if let path = readLine(), !path.isEmpty {
+                let expandedPath = NSString(string: path).expandingTildeInPath
+                if cli.exportToFile(path: expandedPath) {
+                    print(colored("\n✅ Exported \(cli.items.count) items to \(expandedPath)", .green))
+                } else {
+                    print(colored("\n❌ Export failed!", .red))
+                }
+            }
+            print("\nPress any key to continue...")
+            UI.hideCursor()
+            _ = readKey()
+
+        case "I": // Import
+            UI.clearScreen()
+            print(colored("\n📥 Import Clipboard History", .purple, bold: true))
+            print("\nEnter file path:")
+            UI.showCursor()
+            if let path = readLine(), !path.isEmpty {
+                let expandedPath = NSString(string: path).expandingTildeInPath
+                if cli.importFromFile(path: expandedPath) {
+                    print(colored("\n✅ Imported \(cli.items.count) items from \(expandedPath)", .green))
+                } else {
+                    print(colored("\n❌ Import failed!", .red))
+                }
+            }
+            print("\nPress any key to continue...")
+            UI.hideCursor()
+            _ = readKey()
+
         case "Q": // Quit
             running = false
 
@@ -425,10 +498,13 @@ if CommandLine.arguments.contains("--help") || CommandLine.arguments.contains("-
     Interactive Mode Commands:
       ↑/↓         Navigate items
       ENTER       Copy selected item to clipboard
+      P           Preview full item
       F           Toggle favorite
       D           Delete item
       /           Search
       *           Show favorites only
+      E           Export to file
+      I           Import from file
       R           Refresh from disk
       Q           Quit
 
